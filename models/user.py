@@ -71,7 +71,8 @@ class User(db.Model):
 
     def add_multi(self, rel_lookup, attribute):
         # SqlAlchemy "merge" doesn't work with secondary unique keys, so do the lookup manually
-        rel_user_multi = RelUserMulti.query.filter_by(user_id=self.user_id, rel_lookup=rel_lookup, attribute=attribute).first()
+        rel_user_multi = RelUserMulti.query.filter_by(user_id=self.user_id, rel_lookup=rel_lookup,
+                                                      attribute=attribute).first()
         if rel_user_multi:
             rel_user_multi.create_time = pacific_now()
         else:
@@ -132,7 +133,7 @@ class User(db.Model):
             db.session.begin()
             try:
                 db.session.add(RelUserText(user_id=self.user_id, rel_lookup=rel_lookup, attribute=attribute,
-                                       create_time=pacific_now()))
+                                           create_time=pacific_now()))
                 db.session.commit()
             except Exception, e:
                 db.session.rollback()
@@ -169,22 +170,12 @@ class User(db.Model):
     def is_below_tier(self, tier):
         current_tier = self.get_tier()
 
-        if current_tier == "Platinum":
+        tiers_ranking = {'platinum': 5, 'gold': 4, 'silver': 3, 'bronze': 2, 'carbon': 1}
+
+        if current_tier.lower() in tiers_ranking.keys():
+            return tiers_ranking[current_tier.lower()] < tiers_ranking[tier.lower()]
+        else:
             return False
-
-        if current_tier == "Gold" and tier == "Platinum":
-            return True
-
-        if current_tier == "Silver" and tier in ("Gold", "Platinum"):
-            return True
-
-        if current_tier == "Bronze" and tier in ("Silver", "Gold", "Platinum"):
-            return True
-
-        if current_tier == "Carbon" and tier in ("Bronze", "Silver", "Gold", "Platinum"):
-            return True
-
-        return False
 
     # These are for Flask Login --------
     #
@@ -202,7 +193,6 @@ class User(db.Model):
 
     def get_id(self):
         return self.user_id
-
 
     def __eq__(self, other):
         '''
@@ -256,4 +246,3 @@ class User(db.Model):
     @classmethod
     def find_by_attribute(cls, rel_lookup, attribute):
         return User.query.join(RelUser).filter_by(rel_lookup=rel_lookup, attribute=attribute).first()
-
