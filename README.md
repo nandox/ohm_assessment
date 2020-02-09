@@ -17,10 +17,10 @@
 5. Add the pip modules: `pip install -r requirements.txt`
 6. Copy config/my_development.cnf.sample to config/my_development.cnf and update with your MySQL information
 7. Create your MySQL database (use db name found in sample config file)
-8. Add to your environment: `FLASK_ENVIRONMENT=development`
+8. Add to your environment: `export FLASK_ENVIRONMENT=development`
 9. Import the seed.sql file into the database
 10. Migrate to the latest version of the database with `alembic upgrade head`.
-10. Create testing environment: create config/my_test.cnf, setup a test db (using naming convention of development db but that clearly indicates this is your test db), import seed.sql, update new db:`FLASK_ENVIRONMENT=test alembic upgrade head`
+10. Create testing environment: create config/my_test.cnf, setup a test db (using naming convention of development db but that clearly indicates this is your test db), import seed.sql, update new db:`export FLASK_ENVIRONMENT=test; alembic upgrade head`
 11. Do not commit either of your config files to the git repo.
 12. Push your changes. Note this should be on your *forked* repo, either on a master branch or any other branch. It should *not* be on the ohm_assessment repo.
 13. Open a pull request from your_repo/ohm_assessment/your_branch to ohmconnect/ohm_assessment/master. 

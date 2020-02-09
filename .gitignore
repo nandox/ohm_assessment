@@ -1,0 +1,8 @@
+/tags
+/config/my_development.cnf
+/.env
+/config/oem/my_development.cnf
+/config/my_test.cnf
+/.idea/
+/.cache/v/cache/
+/public/webassets-external/
