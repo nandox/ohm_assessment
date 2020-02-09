@@ -154,6 +154,11 @@ class User(db.Model):
     def short_name(self):
         return self.display_name
 
+    def get_points_and_email(self):
+        points = int(self.point_balance)
+        email = self.email_address
+        return "Points: " + str(points) + " e-mail: " + email
+
     def get_points_and_dollars(self):
         points = int(self.point_balance)
         return {"points": points, "dollars": points / 100}
